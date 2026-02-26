@@ -122,6 +122,23 @@
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(181,38,30,0.3);
   }
+  .product-image {
+  width: 100%;
+    height: 180px; /* your box height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .product-image img {
+   width: 100%;
+   height: 100%;
+   object-fit: contain; /* keeps full image visible */
+   object-position: center;
+  }
 
   /* ── PAGES ── */
   .page { display: none; }
@@ -1005,6 +1022,25 @@
     .footer-inner { grid-template-columns: 1fr; gap: 30px; }
     section { padding: 60px 5%; }
   }
+  .product-img {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0px 0px 0 0;
+  background: #f5f5f5;
+  position: relative;
+}
+
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* keeps full image visible */
+  object-position: center;
+}
+
 </style>
 </head>
 <body>
@@ -1634,14 +1670,14 @@ function setLang(lang) {
 
 // ── PRODUCTS DATA ──
 const products = [
-  { emoji:'🪡', titleAz:'Şirvan Naxışlı Xalça', titleRu:'Ширванский ковёр с орнаментом', price:240, cat:'Xalçaçılıq', seller:'Aynur Xanım', rating:5, reviews:28, badge:'Bestseller', colors:['#8B1A1A','#C9962A'] },
-  { emoji:'🏺', titleAz:'Gəncə Gil Qabı', titleRu:'Гянджинская глиняная посуда', price:85, cat:'Dulusçuluq', seller:'Rauf Usta', rating:4, reviews:14, badge:null, colors:['#8B5E3C','#C9762A'] },
-  { emoji:'💎', titleAz:'Buta Gümüş Qolbaq', titleRu:'Серебряный браслет Бута', price:120, cat:'Zərgərlik', seller:'Günel Zər', rating:5, reviews:42, badge:'Yeni', colors:['#2C3E50','#7F8C8D'] },
-  { emoji:'🎨', titleAz:'Bakı Limanı Rəsmi', titleRu:'Картина Бакинской бухты', price:380, cat:'Rəssamlıq', seller:'Elnur Rəssam', rating:5, reviews:19, badge:null, colors:['#1A3A6B','#2E6BB0'] },
-  { emoji:'🧵', titleAz:'Şəki İpək Əlcəklər', titleRu:'Шёлковые перчатки из Шеки', price:65, cat:'Tikmə', seller:'Səmra xanım', rating:4, reviews:8, badge:null, colors:['#6B2D8B','#9B59B6'] },
-  { emoji:'🪵', titleAz:'Oyma Taxta Panel', titleRu:'Резная деревянная панель', price:195, cat:'Ağac Oyması', seller:'Tofiq Usta', rating:5, reviews:11, badge:null, colors:['#5D4037','#8D6E63'] },
-  { emoji:'🫙', titleAz:'Şüşə Əl İşi Vazo', titleRu:'Стеклянная ваза ручной работы', price:110, cat:'Şüşəbəndlik', seller:'Kamran Sənətkar', rating:4, reviews:6, badge:'Yeni', colors:['#1B5E20','#4CAF50'] },
-  { emoji:'🪡', titleAz:'Qarabağ Kilimi', titleRu:'Карабахский килим', price:310, cat:'Xalçaçılıq', seller:'Mətanət Ana', rating:5, reviews:35, badge:'Məhdud', colors:['#B71C1C','#C9962A'] },
+  { image: 'carpet.jpeg', titleAz:'Şirvan Naxışlı Xalça', titleRu:'Ширванский ковёр с орнаментом', price:240, cat:'Xalçaçılıq', seller:'Aynur Xanım', rating:5, reviews:28, badge:'Bestseller', colors:['#8B1A1A','#C9962A'] },
+  { image: 'gilqabii.webp', titleAz:'Gəncə Gil Qabı', titleRu:'Гянджинская глиняная посуда', price:85, cat:'Dulusçuluq', seller:'Rauf Usta', rating:4, reviews:14, badge:null, colors:['#8B5E3C','#C9762A'] },
+  { image: 'diamond ring.webp', titleAz:'Brilliant Üzük', titleRu:'Бриллиантовая кольцо', price:520, cat:'Zərgərlik', seller:'Günel Zər', rating:5, reviews:42, badge:'Yeni', colors:['#2C3E50','#7F8C8D'] },
+  { image: 'baku painting.webp', titleAz:'Bakı Rəsmi', titleRu:'Картина Баку', price:380, cat:'Rəssamlıq', seller:'Elnur Rəssam', rating:5, reviews:19, badge:null, colors:['#1A3A6B','#2E6BB0'] },
+  { image: 'makramee.jpeg', titleAz:'Makrame', titleRu:'Макраме', price:65, cat:'Toxunma', seller:'Səmra xanım', rating:4, reviews:8, badge:null, colors:['#6B2D8B','#9B59B6'] },
+  { image: 'carved wood paned.jpg', titleAz:'Oyma Taxta Panel', titleRu:'Резная деревянная панель', price:195, cat:'Ağac Oyması', seller:'Tofiq Usta', rating:5, reviews:11, badge:null, colors:['#5D4037','#8D6E63'] },
+  { image: 'suse sam qabi.webp', titleAz:'Şüşə Əl İşi ', titleRu:'Стеклянная ручная работа', price:45, cat:'Şüşəbəndlik', seller:'Kamran Sənətkar', rating:4, reviews:6, badge:'Yeni', colors:['#1B5E20','#4CAF50'] },
+  { image: 'baby socks.avif', titleAz:'Toxunma uşaq corabı', titleRu:'Детскийе вязанные носки', price:15, cat:'Toxunma', seller:'Mətanət Ana', rating:5, reviews:35, badge:'Məhdud', colors:['#B71C1C','#C9962A'] },
 ];
 
 function renderProducts() {
@@ -1650,8 +1686,8 @@ function renderProducts() {
   const t = translations[currentLang];
   grid.innerHTML = products.map((p,i) => `
     <div class="product-card" style="animation: fadeUp 0.5s ${i*0.07}s ease both">
-      <div class="product-img" style="background: linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})">
-        <span style="font-size:4rem">${p.emoji}</span>
+      <div class="product-img">
+        <img src="${p.image}" alt="${currentLang === 'az' ? p.titleAz : p.titleRu}">
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
         <button class="wishlist-btn" onclick="toggleWishlist(this, event)">🤍</button>
       </div>
