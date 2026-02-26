@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SənətBazarı — Azərbaycan El Sənəti</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #B5261E;
+    --crimson-light: #D63C33;
+    --gold: #C9962A;
+    --gold-light: #E8B94A;
+    --cream: #FAF6EF;
+    --cream-dark: #F0E8D8;
+    --navy: #1C2B3A;
+    --navy-light: #2E4057;
+    --text: #1A1A1A;
+    --text-muted: #6B6B6B;
+    --white: #FFFFFF;
+    --border: rgba(201,150,42,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── PATTERN SVG BACKGROUND ── */
+  .pattern-bg {
+    background-color: var(--cream);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30Z' fill='none' stroke='%23C9962A' stroke-width='0.4' opacity='0.3'/%3E%3Ccircle cx='30' cy='30' r='4' fill='none' stroke='%23C9962A' stroke-width='0.4' opacity='0.25'/%3E%3Cpath d='M0 0 L15 15 M45 15 L60 0 M0 60 L15 45 M45 45 L60 60' stroke='%23C9962A' stroke-width='0.4' opacity='0.2'/%3E%3C/svg%3E");
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,246,239,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    height: 90px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(181,38,30,0.08); }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--crimson);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 20px 8px 0 0;
+  }
+  .logo-icon img {
+    width: 220px; height: 250px;
+    object-fit: contain;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--crimson); }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .lang-switch {
+    display: flex; align-items: center;
+    background: var(--cream-dark);
+    border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .lang-btn {
+    padding: 5px 12px;
+    font-size: 0.8rem; font-weight: 700;
+    cursor: pointer; border: none; background: transparent;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    font-family: 'Nunito', sans-serif;
+  }
+  .lang-btn.active {
+    background: var(--crimson);
+    color: white;
+    border-radius: 20px;
+  }
+
+  .btn-nav {
+    background: var(--crimson);
+    color: white;
+    border: none; cursor: pointer;
+    padding: 9px 20px;
+    border-radius: 25px;
+    font-weight: 700; font-size: 0.85rem;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .btn-nav:hover {
+    background: var(--crimson-light);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(181,38,30,0.3);
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(155deg, rgba(10,10,10,0.72) 0%, rgba(20,8,5,0.78) 50%, rgba(90,15,10,0.70) 100%), url('wallpaper1.jpg') center/cover no-repeat;
+  }
+
+  .hero-pattern {
+    position: absolute; inset: 0; opacity: 0.0;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,150,42,0.15) 0%, transparent 70%);
+    top: 50%; left: 55%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto;
+    padding: 80px 5%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,150,42,0.25);
+    border: 1px solid rgba(201,150,42,0.7);
+    color: #FFD166;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s 0.1s ease both;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+  .hero-title .gold { color: var(--gold-light); }
+  .hero-title em { font-style: italic; color: rgba(255,255,255,0.85); }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 480px;
+    animation: fadeUp 0.8s 0.2s ease both;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    border: none; cursor: pointer;
+    padding: 14px 28px; border-radius: 50px;
+    font-weight: 800; font-size: 0.95rem;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(201,150,42,0.4);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,150,42,0.5);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.4);
+    cursor: pointer;
+    padding: 14px 28px; border-radius: 50px;
+    font-weight: 700; font-size: 0.95rem;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover {
+    border-color: white;
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* Hero Visual */
+  .hero-visual {
+    position: relative;
+    animation: fadeUp 0.8s 0.2s ease both;
+    display: flex; justify-content: center;
+  }
+
+  .hero-cards-stack {
+    position: relative; width: 340px; height: 400px;
+  }
+
+  .hero-card {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .hero-card:nth-child(1) {
+    width: 200px; height: 250px;
+    top: 0; left: 0;
+    transform: rotate(-6deg);
+    background: linear-gradient(135deg, #8B1A1A, #C9962A);
+  }
+  .hero-card:nth-child(2) {
+    width: 200px; height: 250px;
+    top: 30px; left: 70px;
+    transform: rotate(3deg);
+    background: linear-gradient(135deg, #C9962A, #8B6914);
+  }
+  .hero-card:nth-child(3) {
+    width: 200px; height: 250px;
+    top: 80px; left: 130px;
+    transform: rotate(-2deg);
+    background: linear-gradient(135deg, #1C2B3A, #2E4057);
+  }
+  .hero-card-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px;
+    gap: 10px;
+  }
+  .hero-card-emoji { font-size: 3rem; }
+  .hero-card-label {
+    font-family: 'Playfair Display', serif;
+    color: white; font-weight: 700;
+    font-size: 0.85rem; text-align: center;
+    opacity: 0.9;
+  }
+  .hero-card-price {
+    color: var(--gold-light);
+    font-weight: 800; font-size: 1rem;
+  }
+
+  .hero-stats {
+    display: flex; gap: 32px; margin-top: 40px;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat { text-align: left; }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900;
+    color: #FFD166;
+    display: block;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.85); font-weight: 600; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 80px 5%; }
+
+  .section-header {
+    text-align: center; margin-bottom: 50px;
+  }
+  .section-tag {
+    display: inline-block;
+    background: rgba(181,38,30,0.08);
+    color: var(--crimson);
+    padding: 4px 14px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 12px;
+    border: 1px solid rgba(181,38,30,0.2);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .section-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    max-width: 500px; margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .max-container { max-width: 1200px; margin: 0 auto; }
+
+  /* ── CATEGORIES ── */
+  .categories-section { background: var(--white); }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .cat-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--crimson), var(--gold));
+    opacity: 0; transition: opacity 0.3s;
+    border-radius: 16px;
+  }
+  .cat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(181,38,30,0.15); }
+  .cat-card:hover::before { opacity: 1; }
+  .cat-card:hover .cat-emoji { transform: scale(1.15); }
+  .cat-card:hover .cat-name { color: white; }
+  .cat-card:hover .cat-count { color: rgba(255,255,255,0.7); }
+
+  .cat-emoji {
+    font-size: 2.5rem; display: block;
+    margin-bottom: 12px; position: relative; z-index: 1;
+    transition: transform 0.3s;
+  }
+  .cat-name {
+    font-weight: 800; font-size: 0.95rem;
+    color: var(--navy); display: block;
+    margin-bottom: 4px; position: relative; z-index: 1;
+    transition: color 0.3s;
+  }
+  .cat-count {
+    font-size: 0.8rem; color: var(--text-muted);
+    position: relative; z-index: 1;
+    transition: color 0.3s;
+  }
+
+  /* ── FEATURED PRODUCTS ── */
+  .products-section { background: var(--cream); }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .product-card {
+    background: var(--white);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  }
+
+  .product-img {
+    height: 220px;
+    background: linear-gradient(135deg, #f0e8d8, #e0cdb0);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    position: relative; overflow: hidden;
+  }
+
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--crimson);
+    color: white; font-size: 0.7rem; font-weight: 800;
+    padding: 3px 10px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+
+  .wishlist-btn {
+    position: absolute; top: 12px; right: 12px;
+    width: 34px; height: 34px;
+    background: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+    border: none;
+  }
+  .wishlist-btn:hover { transform: scale(1.15); }
+
+  .product-info { padding: 18px; }
+  .product-category {
+    font-size: 0.72rem; font-weight: 700;
+    color: var(--gold); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 6px;
+  }
+  .product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .product-seller {
+    font-size: 0.8rem; color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .product-seller span { color: var(--crimson); font-weight: 600; }
+
+  .product-stars { color: #F59E0B; font-size: 0.75rem; margin-bottom: 12px; }
+  .product-stars em { color: var(--text-muted); font-style: normal; font-size: 0.72rem; }
+
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .product-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 900;
+    color: var(--crimson);
+  }
+  .btn-cart {
+    background: var(--navy);
+    color: white; border: none; cursor: pointer;
+    padding: 7px 14px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-cart:hover { background: var(--crimson); }
+/* ══════════════════════════════════
+   WAITLIST PAGE
+══════════════════════════════════ */
+.waitlist-page { padding-top: 90px; min-height: 100vh; }
+
+.waitlist-hero {
+  min-height: 55vh;
+  background: linear-gradient(155deg, rgba(10,10,10,0.75) 0%, rgba(20,8,5,0.82) 50%, rgba(90,15,10,0.72) 100%), url('wallpaper1.jpg') center/cover no-repeat;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  position: relative; overflow: hidden;
+  padding: 80px 5%;
+}
+.waitlist-hero-pattern {
+  position: absolute; inset: 0; opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40Z' fill='none' stroke='%23E8B94A' stroke-width='1'/%3E%3Ccircle cx='40' cy='40' r='12' fill='none' stroke='%23E8B94A' stroke-width='0.5'/%3E%3C/svg%3E");
+}
+.waitlist-hero-content { position: relative; z-index: 2; max-width: 750px; margin: 0 auto; }
+.waitlist-hero .section-tag {
+  background: rgba(201,150,42,0.2);
+  color: #FFD166;
+  border-color: rgba(201,150,42,0.5);
+  margin-bottom: 20px;
+}
+.waitlist-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900; color: white; line-height: 1.1;
+  margin-bottom: 18px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+.waitlist-hero h1 .gold { color: #FFD166; }
+.waitlist-hero p {
+  color: rgba(255,255,255,0.88);
+  font-size: 1.1rem; line-height: 1.75;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  max-width: 580px; margin: 0 auto;
+}
+
+/* Countdown */
+.countdown-section { background: var(--navy); padding: 50px 5%; text-align: center; }
+.countdown-label {
+  font-size: 0.78rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: var(--gold-light); margin-bottom: 20px;
+}
+.countdown-grid { display: inline-flex; gap: 24px; align-items: center; }
+.countdown-item { text-align: center; }
+.countdown-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem; font-weight: 900; color: white;
+  display: block; line-height: 1; min-width: 80px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(201,150,42,0.3);
+  border-radius: 14px; padding: 14px 10px;
+}
+.countdown-unit {
+  font-size: 0.72rem; color: rgba(255,255,255,0.5);
+  font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; margin-top: 8px; display: block;
+}
+.countdown-sep {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem; color: var(--gold-light);
+  margin-bottom: 28px; font-weight: 900;
+}
+
+/* Benefits strip */
+.benefits-strip { background: var(--cream-dark); padding: 30px 5%; border-bottom: 1px solid var(--border); }
+.benefits-strip-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+}
+.benefit-pill { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; font-weight: 700; color: var(--navy); }
+.benefit-pill .pip { font-size: 1.2rem; }
+
+/* Main waitlist section */
+.waitlist-main { background: var(--cream); padding: 70px 5%; }
+.waitlist-grid {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+}
+
+/* Left: form */
+.waitlist-form-box {
+  background: white; border-radius: 24px;
+  border: 1px solid var(--border); padding: 44px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.07);
+}
+.wf-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--navy); margin-bottom: 6px; }
+.wf-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 28px; line-height: 1.6; }
+
+.role-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+.role-btn {
+  padding: 12px 10px; border: 2px solid var(--border);
+  border-radius: 14px; background: var(--cream);
+  cursor: pointer; text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700; font-size: 0.88rem; color: var(--text-muted);
+  transition: all 0.2s;
+}
+.role-btn .role-icon { display: block; font-size: 1.5rem; margin-bottom: 4px; }
+.role-btn.active { border-color: var(--crimson); background: rgba(181,38,30,0.05); color: var(--crimson); }
+.role-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+
+.wf-group { margin-bottom: 16px; }
+.wf-group label { display: block; font-weight: 700; font-size: 0.83rem; color: var(--navy); margin-bottom: 6px; }
+.wf-group label span { color: var(--crimson); }
+.wf-input {
+  width: 100%; padding: 12px 16px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  font-family: 'Nunito', sans-serif; font-size: 0.92rem;
+  color: var(--text); background: var(--cream);
+  transition: all 0.2s; outline: none;
+}
+.wf-input:focus { border-color: var(--crimson); background: white; box-shadow: 0 0 0 3px rgba(181,38,30,0.08); }
+.wf-input::placeholder { color: var(--text-muted); }
+.wf-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.wf-interest { margin-bottom: 20px; }
+.wf-interest-label { font-weight: 700; font-size: 0.83rem; color: var(--navy); margin-bottom: 10px; display: block; }
+.interest-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 6px 14px; border: 1.5px solid var(--border);
+  border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+  cursor: pointer; background: var(--cream); color: var(--text-muted);
+  transition: all 0.2s; font-family: 'Nunito', sans-serif;
+}
+.chip:hover { border-color: var(--crimson); color: var(--crimson); }
+.chip.selected { background: var(--crimson); border-color: var(--crimson); color: white; }
+
+.wf-notice {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(201,150,42,0.08);
+  border: 1px solid rgba(201,150,42,0.3);
+  border-radius: 12px; padding: 14px;
+  font-size: 0.82rem; color: var(--text-muted);
+  margin-bottom: 20px; line-height: 1.5;
+}
+.wf-notice .ni { font-size: 1rem; flex-shrink: 0; }
+
+.btn-waitlist {
+  width: 100%;
+  background: linear-gradient(135deg, var(--crimson), var(--crimson-light));
+  color: white; border: none; cursor: pointer;
+  padding: 16px; border-radius: 50px;
+  font-size: 1rem; font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.3s;
+  box-shadow: 0 6px 25px rgba(181,38,30,0.3);
+  letter-spacing: 0.02em;
+}
+.btn-waitlist:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(181,38,30,0.4); }
+
+/* Success state */
+.waitlist-success { display: none; text-align: center; padding: 40px 20px; }
+.success-icon {
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, #22C55E, #16A34A);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; margin: 0 auto 20px;
+  box-shadow: 0 10px 30px rgba(34,197,94,0.3);
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.success-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--navy); margin-bottom: 10px; }
+.success-text { color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; margin-bottom: 24px; max-width: 320px; margin-left: auto; margin-right: auto; }
+.success-number {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--crimson), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; margin-bottom: 6px;
+}
+.success-number-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+
+/* Right: info panel */
+.waitlist-info { display: flex; flex-direction: column; gap: 24px; padding-top: 10px; }
+.info-card { background: white; border: 1px solid var(--border); border-radius: 18px; padding: 26px; }
+.info-card-title {
+  font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 800;
+  color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+}
+.info-card-title span { font-size: 1.2rem; }
+.perks-list { display: flex; flex-direction: column; gap: 10px; }
+.perk-item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: var(--text-muted); font-weight: 600; }
+.perk-check {
+  width: 22px; height: 22px;
+  background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.4);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; color: #16A34A; flex-shrink: 0;
+}
+.social-proof { display: flex; align-items: center; gap: 12px; }
+.avatar-stack { display: flex; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 1rem; margin-left: -8px; }
+.avatar:first-child { margin-left: 0; }
+.avatar-1 { background: linear-gradient(135deg, #8B1A1A, #C9962A); }
+.avatar-2 { background: linear-gradient(135deg, #1C2B3A, #C9962A); }
+.avatar-3 { background: linear-gradient(135deg, #6B2D8B, #C9762A); }
+.avatar-4 { background: linear-gradient(135deg, #1B5E20, #C9962A); }
+.social-text { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+.social-text strong { color: var(--navy); }
+
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item { display: flex; gap: 14px; padding-bottom: 20px; position: relative; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; position: relative; z-index: 1; }
+.timeline-dot.done { background: linear-gradient(135deg, #22C55E, #16A34A); }
+.timeline-dot.active { background: linear-gradient(135deg, var(--crimson), var(--gold)); }
+.timeline-dot.pending { background: var(--cream-dark); border: 2px dashed var(--border); }
+.timeline-item:not(:last-child) .timeline-dot::after {
+  content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  width: 2px; height: calc(100% + 20px); background: var(--border);
+}
+.timeline-content { padding-top: 6px; }
+.timeline-title { font-weight: 800; font-size: 0.88rem; color: var(--navy); margin-bottom: 2px; }
+.timeline-date { font-size: 0.78rem; color: var(--text-muted); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .waitlist-grid { grid-template-columns: 1fr; }
+  .waitlist-form-box { padding: 30px 24px; }
+  .wf-grid-2 { grid-template-columns: 1fr; }
+  .countdown-grid { gap: 12px; }
+  .countdown-num { font-size: 2rem; min-width: 60px; }
+  .benefits-strip-inner { gap: 20px; }
+}
+@media (max-width: 500px) {
+  .countdown-sep { display: none; }
+}
+  /* ── SELLER CTA ── */
+  .seller-cta {
+    background: linear-gradient(135deg, var(--navy) 0%, #162030 100%);
+    position: relative; overflow: hidden;
+  }
+  .seller-cta .pattern {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30Z' fill='none' stroke='%23E8B94A' stroke-width='1'/%3E%3C/svg%3E");
+  }
+  .cta-inner {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900; color: white; line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .cta-title .gold { color: var(--gold-light); }
+  .cta-text { color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 30px; font-size: 1rem; }
+
+  .cta-perks { display: flex; flex-direction: column; gap: 12px; }
+  .perk {
+    display: flex; align-items: center; gap: 12px;
+    color: rgba(255,255,255,0.85); font-size: 0.9rem; font-weight: 600;
+  }
+  .perk-icon {
+    width: 36px; height: 36px;
+    background: rgba(201,150,42,0.2);
+    border: 1px solid rgba(201,150,42,0.4);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+
+  /* ── TRUST SECTION ── */
+  .trust-section { background: var(--white); padding: 60px 5%; }
+  .trust-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+  }
+  .trust-card {
+    text-align: center; padding: 30px 20px;
+    border: 1px solid var(--border); border-radius: 16px;
+    background: var(--cream);
+  }
+  .trust-icon { font-size: 2.5rem; margin-bottom: 16px; display: block; }
+  .trust-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .trust-text { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    padding: 50px 5% 30px;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 30px;
+  }
+  .footer-brand .nav-logo { color: var(--gold-light); margin-bottom: 14px; display: inline-flex; }
+  .footer-brand p { font-size: 0.88rem; line-height: 1.7; max-width: 260px; }
+  .footer-col h4 {
+    color: white; font-weight: 800; font-size: 0.88rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col ul li a {
+    color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.88rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--gold-light); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.82rem;
+  }
+
+  /* ── OPEN STORE PAGE ── */
+  .open-store-page {
+    padding-top: 70px;
+    min-height: 100vh;
+  }
+
+  .store-hero {
+    background: linear-gradient(135deg, var(--navy), #2a1810);
+    padding: 80px 5%;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .store-hero .pattern { position: absolute; inset: 0; opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 0 L80 40 L40 80 L0 40Z' fill='none' stroke='%23E8B94A' stroke-width='1'/%3E%3C/svg%3E");
+  }
+  .store-hero-content { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
+  .store-hero .section-tag { background: rgba(201,150,42,0.15); color: var(--gold-light); border-color: rgba(201,150,42,0.3); }
+  .store-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 900; color: white; line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .store-hero h1 .gold { color: var(--gold-light); }
+  .store-hero p { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7; }
+
+  /* Steps */
+  .steps-section { background: var(--white); padding: 70px 5%; }
+  .steps-grid {
+    max-width: 1100px; margin: 0 auto 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px;
+  }
+  .step-card {
+    text-align: center; padding: 35px 25px;
+    background: var(--cream); border-radius: 20px;
+    border: 1px solid var(--border); position: relative;
+  }
+  .step-num {
+    width: 50px; height: 50px;
+    background: linear-gradient(135deg, var(--crimson), var(--gold));
+    color: white; font-weight: 900; font-size: 1.2rem;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-family: 'Playfair Display', serif;
+  }
+  .step-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+  .step-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .step-text { color: var(--text-muted); font-size: 0.87rem; line-height: 1.6; }
+
+  /* Registration Form */
+  .form-section {
+    background: var(--cream); padding: 70px 5%;
+  }
+  .form-wrap {
+    max-width: 750px; margin: 0 auto;
+    background: white; border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 50px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+  }
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900; color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .form-subtitle { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 36px; }
+
+  .form-divider {
+    height: 1px; background: var(--border); margin: 30px 0;
+    position: relative;
+  }
+  .form-divider span {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: white; padding: 0 12px;
+    color: var(--text-muted); font-size: 0.8rem; font-weight: 600; white-space: nowrap;
+  }
+
+  .form-section-label {
+    font-weight: 800; font-size: 0.8rem; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--crimson); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block; font-weight: 700; font-size: 0.85rem;
+    color: var(--navy); margin-bottom: 7px;
+  }
+  .form-group label span { color: var(--crimson); }
+
+  .form-control {
+    width: 100%; padding: 12px 16px;
+    border: 1.5px solid var(--border); border-radius: 12px;
+    font-family: 'Nunito', sans-serif; font-size: 0.92rem;
+    color: var(--text); background: var(--cream);
+    transition: all 0.2s; outline: none;
+  }
+  .form-control:focus {
+    border-color: var(--crimson);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(181,38,30,0.08);
+  }
+  .form-control::placeholder { color: var(--text-muted); }
+
+  select.form-control { cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%236B6B6B' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  textarea.form-control { resize: vertical; min-height: 100px; }
+
+  .upload-box {
+    border: 2px dashed var(--border); border-radius: 12px;
+    padding: 30px; text-align: center;
+    background: var(--cream); cursor: pointer; transition: all 0.2s;
+  }
+  .upload-box:hover { border-color: var(--crimson); background: rgba(181,38,30,0.03); }
+  .upload-icon { font-size: 2rem; display: block; margin-bottom: 10px; }
+  .upload-text { font-size: 0.85rem; color: var(--text-muted); }
+  .upload-text strong { color: var(--crimson); }
+
+  .terms-check {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px;
+  }
+  .terms-check input { margin-top: 2px; accent-color: var(--crimson); }
+  .terms-check a { color: var(--crimson); font-weight: 600; }
+
+  .btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, var(--crimson), var(--crimson-light));
+    color: white; border: none; cursor: pointer;
+    padding: 16px; border-radius: 50px;
+    font-size: 1rem; font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 6px 25px rgba(181,38,30,0.3);
+    letter-spacing: 0.02em;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 35px rgba(181,38,30,0.4);
+  }
+
+  /* FAQ */
+  .faq-section { background: var(--white); padding: 70px 5%; }
+  .faq-grid { max-width: 800px; margin: 50px auto 0; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item {
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; background: var(--cream);
+  }
+  .faq-q {
+    padding: 18px 22px; font-weight: 700; font-size: 0.95rem;
+    color: var(--navy); cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: color 0.2s;
+  }
+  .faq-q:hover { color: var(--crimson); }
+  .faq-q .arrow { font-size: 0.75rem; transition: transform 0.3s; }
+  .faq-item.open .faq-q { color: var(--crimson); }
+  .faq-item.open .arrow { transform: rotate(180deg); }
+  .faq-a {
+    padding: 0 22px; max-height: 0; overflow: hidden;
+    color: var(--text-muted); font-size: 0.88rem; line-height: 1.7;
+    transition: all 0.3s;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding: 0 22px 18px; }
+
+  /* ── TOAST ── */
+  .toast-container {
+    position: fixed; bottom: 30px; right: 30px;
+    z-index: 9999; display: flex; flex-direction: column; gap: 10px;
+  }
+  .toast {
+    background: var(--navy); color: white;
+    padding: 14px 20px; border-radius: 14px;
+    font-size: 0.9rem; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: slideIn 0.4s ease, fadeOut 0.4s ease 2.6s forwards;
+    max-width: 320px;
+  }
+  .toast.success { border-left: 4px solid #22C55E; }
+  .toast.error { border-left: 4px solid var(--crimson); }
+  .toast.info { border-left: 4px solid var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(60px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; pointer-events: none; }
+  }
+
+  .animate { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+  .animate.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+
+  @media (max-width: 900px) {
+    .nav-links, .btn-nav { display: none; }
+    .hamburger { display: block; }
+    .hero-content { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .hero-stats { gap: 20px; }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps-grid { grid-template-columns: 1fr; }
+    .cta-inner { grid-template-columns: 1fr; gap: 30px; }
+    .trust-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .form-wrap { padding: 30px 24px; }
+    .form-grid-2 { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  }
+
+  @media (max-width: 500px) {
+    .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 30px; }
+    section { padding: 60px 5%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a class="nav-logo" onclick="showPage('home')">
+    <div class="logo-icon"><img src="senetbazari.png" ,alt=""></div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showPage('home')">Ana Səhifə</a></li>
+    <li><a href="#categories">Kateqoriyalar</a></li>
+    <li><a href="#featured">Məhsullar</a></li>
+    <li><a href="#" onclick="showPage('openstore')">Mağaza Aç</a></li>
+    <li><a href="#" onclick="showPage('waitlist')" style="color:var(--crimson);font-weight:800">🔔 Gözləmə Siyahısı</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switch">
+      <button class="lang-btn active" id="langAz" onclick="setLang('az')">AZ</button>
+      <button class="lang-btn" id="langRu" onclick="setLang('ru')">RU</button>
+    </div>
+    <button class="btn-nav" onclick="showPage('openstore')" id="navCta">Mağaza Aç</button>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════════════════════════ -->
+<!--           HOME PAGE               -->
+<!-- ═══════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div>
+        <div class="hero-badge">🇦🇿 <span id="hero-badge-text">Azərbaycan Əl İşi</span></div>
+        <h1 class="hero-title" id="hero-title">
+          Əl işi sənətin<br>
+          ən <em>gözəl</em><br>
+          <span class="gold">nümunələri</span>
+        </h1>
+        <p class="hero-subtitle" id="hero-subtitle">
+          Azərbaycan sənətkarlarının əl ilə hazırladığı unikal sənət əsərlərini kəşf edin. Xalçadan zərgərliyə, dulusçuluqdan tikməyə — hər parçanın öz hekayəsi var.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" id="hero-btn1" onclick="scrollToSection('categories')">🛍️ Bazara Bax</button>
+          <button class="btn-secondary" id="hero-btn2" onclick="showPage('openstore')">✨ Mağaza Aç</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">320+</span>
+            <span class="stat-label" id="stat1">Sənətkar</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">1,800+</span>
+            <span class="stat-label" id="stat2">Məhsul</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">8</span>
+            <span class="stat-label" id="stat3">Şəhər</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-cards-stack">
+          <div class="hero-card">
+            <div class="hero-card-inner">
+              <span class="hero-card-emoji">🏺</span>
+              <span class="hero-card-label">Gəncə Dulusçuluğu</span>
+              <span class="hero-card-price">₼85</span>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="hero-card-inner">
+              <span class="hero-card-emoji">🪡</span>
+              <span class="hero-card-label">Şirvan Xalçası</span>
+              <span class="hero-card-price">₼240</span>
+            </div>
+          </div>
+          <div class="hero-card">
+            <div class="hero-card-inner">
+              <span class="hero-card-emoji">💎</span>
+              <span class="hero-card-label">Buta Qolbaq</span>
+              <span class="hero-card-price">₼120</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- CATEGORIES -->
+  <section class="categories-section" id="categories">
+    <div class="max-container">
+      <div class="section-header animate">
+        <div class="section-tag" id="cat-tag">Kateqoriyalar</div>
+        <h2 class="section-title" id="cat-title">Sənətin Hər Növü</h2>
+        <p class="section-subtitle" id="cat-sub">Azərbaycanın zəngin sənət ənənələrindən ilham alan kateqoriyaları kəşf edin</p>
+      </div>
+      <div class="categories-grid animate">
+        <div class="cat-card" onclick="filterCategory('carpet')">
+          <span class="cat-emoji">🪡</span>
+          <span class="cat-name" id="c1">Xalçaçılıq</span>
+          <span class="cat-count">142 məhsul</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('pottery')">
+          <span class="cat-emoji">🏺</span>
+          <span class="cat-name" id="c2">Dulusçuluq</span>
+          <span class="cat-count">89 məhsul</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('jewelry')">
+          <span class="cat-emoji">💎</span>
+          <span class="cat-name" id="c3">Zərgərlik</span>
+          <span class="cat-count">215 məhsul</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('embroidery')">
+          <span class="cat-emoji">🧵</span>
+          <span class="cat-name" id="c4">Tikmə</span>
+          <span class="cat-count">167 məhsul</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('wood')">
+          <span class="cat-emoji">🪵</span>
+          <span class="cat-name" id="c5">Ağac Oyması</span>
+          <span class="cat-count">54 məhsul</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('glass')">
+          <span class="cat-emoji">🫙</span>
+          <span class="cat-name" id="c6">Şüşəbəndlik</span>
+          <span class="cat-count">38 məhsul</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('painting')">
+          <span class="cat-emoji">🎨</span>
+          <span class="cat-name" id="c7">Rəssamlıq</span>
+          <span class="cat-count">203 məhsul</span>
+        </div>
+        <div class="cat-card" onclick="filterCategory('other')">
+          <span class="cat-emoji">✨</span>
+          <span class="cat-name" id="c8">Digər</span>
+          <span class="cat-count">312 məhsul</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="products-section" id="featured">
+    <div class="max-container">
+      <div class="section-header animate">
+        <div class="section-tag" id="prod-tag">Seçilmiş Məhsullar</div>
+        <h2 class="section-title" id="prod-title">Ustaların Şah Əsərləri</h2>
+        <p class="section-subtitle" id="prod-sub">Azərbaycanın ən istedadlı sənətkarlardan əl ilə hazırlanmış unikal parçalar</p>
+      </div>
+      <div class="products-grid animate" id="productsGrid">
+        <!-- Products injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SELLER CTA -->
+  <section class="seller-cta" id="seller-cta">
+    <div class="pattern"></div>
+    <div class="cta-inner">
+      <div>
+        <div class="section-tag" style="background:rgba(201,150,42,0.15);color:var(--gold-light);border-color:rgba(201,150,42,0.3)" id="cta-tag">Ustalar Üçün</div>
+        <h2 class="cta-title" id="cta-title">Sənətini <span class="gold">Dünyaya</span> Sat</h2>
+        <p class="cta-text" id="cta-text">SənətBazarında öz mağazanı aç, məhsullarını əlavə et və bütün Azərbaycana sat. Qeydiyyat pulsuzdur.</p>
+        <button class="btn-primary" onclick="showPage('openstore')" id="cta-btn">🏪 Mağaza Aç — Pulsuz</button>
+      </div>
+      <div class="cta-perks animate">
+        <div class="perk"><div class="perk-icon">🚀</div> <span id="perk1">Dəqiqələr içində mağaza aç</span></div>
+        <div class="perk"><div class="perk-icon">📦</div> <span id="perk2">Məhsullarını asanlıqla idarə et</span></div>
+        <div class="perk"><div class="perk-icon">💳</div> <span id="perk3">Güvənli ödəniş sistemi</span></div>
+        <div class="perk"><div class="perk-icon">📊</div> <span id="perk4">Satış statistikasına bax</span></div>
+        <div class="perk"><div class="perk-icon">🤝</div> <span id="perk5">Alıcılarla birbaşa əlaqə</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust-section">
+    <div class="trust-grid animate">
+      <div class="trust-card">
+        <span class="trust-icon">🤲</span>
+        <div class="trust-title" id="t1">100% Əl İşi</div>
+        <p class="trust-text" id="t1t">Bütün məhsullar Azərbaycan ustalarının öz əlləri ilə hazırlanmışdır</p>
+      </div>
+      <div class="trust-card">
+        <span class="trust-icon">🛡️</span>
+        <div class="trust-title" id="t2">Güvənli Alış</div>
+        <p class="trust-text" id="t2t">Hər alış tam təhlükəsizdir. Razı qalmasan — pulunu geri al</p>
+      </div>
+      <div class="trust-card">
+        <span class="trust-icon">🌍</span>
+        <div class="trust-title" id="t3">Yerli Ustalara Dəstək</div>
+        <p class="trust-text" id="t3t">Alışın Azərbaycan ənənəvi sənətinin qorunmasına birbaşa kömək edir</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="nav-logo" href="#">
+          <div class="logo-icon"><img src="senetbazari.png" alt="SənətBazarı Logo"></div> SənətBazarı
+        </a>
+        <p id="footer-desc">Azərbaycan ustalarının əl işi sənət əsərlərini bir platformada birləşdiririk.</p>
+      </div>
+      <div class="footer-col">
+        <h4 id="fl1">Marketplace</h4>
+        <ul>
+          <li><a href="#categories">Kateqoriyalar</a></li>
+          <li><a href="#featured">Məhsullar</a></li>
+          <li><a href="#">Ustalar</a></li>
+          <li><a href="#">Endirimler</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 id="fl2">Satıcılar</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('openstore')">Mağaza Aç</a></li>
+          <li><a href="#">Satıcı Bələdçisi</a></li>
+          <li><a href="#">Komissiyalar</a></li>
+          <li><a href="#">Uğur Hekayələri</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 id="fl3">Yardım</h4>
+        <ul>
+          <li><a href="#">Haqqımızda</a></li>
+          <li><a href="#">Əlaqə</a></li>
+          <li><a href="#">Gizlilik Siyasəti</a></li>
+          <li><a href="#">Şərtlər</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footer-copy">© 2024 SənətBazarı. Bütün hüquqlar qorunur.</span>
+      <span>🇦🇿 Bakı, Azərbaycan</span>
+    </div>
+  </footer>
+
+</div>
+<!-- END HOME PAGE -->
+
+
+<!-- ═══════════════════════════════════ -->
+<!--        OPEN STORE PAGE            -->
+<!-- ═══════════════════════════════════ -->
+<div id="page-openstore" class="page">
+
+  <!-- Store Hero -->
+  <div class="store-hero">
+    <div class="pattern"></div>
+    <div class="store-hero-content">
+      <div class="section-tag" id="sh-tag">Ustalar Üçün</div>
+      <h1 id="sh-title">Öz <span class="gold">Sənət Mağazanı</span> Aç</h1>
+      <p id="sh-sub">Azərbaycanın ən böyük əl işi bazarında mağazanı aç. Qeydiyyat pulsuzdur, komissiya aşağıdır, alıcı bazarı böyükdür.</p>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <section class="steps-section">
+    <div class="max-container">
+      <div class="section-header">
+        <div class="section-tag" id="steps-tag">Necə İşləyir</div>
+        <h2 class="section-title" id="steps-title">3 Addımda Satışa Başla</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <span class="step-icon">📝</span>
+          <div class="step-title" id="s1t">Qeydiyyatdan Keç</div>
+          <p class="step-text" id="s1d">Adın, şəhərin və sənətin haqqında məlumat ver. Təsdiq 24 saat ərzində gəlir.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <span class="step-icon">🏪</span>
+          <div class="step-title" id="s2t">Mağazanı Qur</div>
+          <p class="step-text" id="s2d">Mağaza adını, logonu və açıqlamanı əlavə et. Birkaç dəqiqəyə hazırdır.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <span class="step-icon">💰</span>
+          <div class="step-title" id="s3t">Satmağa Başla</div>
+          <p class="step-text" id="s3d">Məhsullarını yüklə, qiymət qoy və qazanmağa başla. Ödənişlər birbaşa sənə gəlir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Registration Form -->
+  <section class="form-section">
+    <div class="form-wrap">
+      <h2 class="form-title" id="form-title">Satıcı Qeydiyyatı</h2>
+      <p class="form-subtitle" id="form-sub">Bütün sahələri doldurun. Sorğunuz 24 saat ərzində baxılacaq.</p>
+
+      <div class="form-section-label">👤 <span id="fl-personal">Şəxsi Məlumatlar</span></div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label id="lbl-name">Ad Soyad <span>*</span></label>
+          <input type="text" class="form-control" id="inp-name" placeholder="Leyla Elizade">
+        </div>
+        <div class="form-group">
+          <label id="lbl-email">E-mail <span>*</span></label>
+          <input type="email" class="form-control" id="inp-email" placeholder="sizin@mail.com">
+        </div>
+        <div class="form-group">
+          <label id="lbl-phone">Telefon <span>*</span></label>
+          <input type="tel" class="form-control" id="inp-phone" placeholder="+994 50 123 45 67">
+        </div>
+        <div class="form-group">
+          <label id="lbl-city">Şəhər <span>*</span></label>
+          <select class="form-control" id="inp-city">
+            <option value="">— Seçin —</option>
+            <option>Bakı</option>
+            <option>Gəncə</option>
+            <option>Şəki</option>
+            <option>Sumqayıt</option>
+            <option>Lənkəran</option>
+            <option>Naxçıvan</option>
+            <option>Şamaxı</option>
+            <option>Quba</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label id="lbl-bio">Sənətiniz haqqında qısa məlumat <span>*</span></label>
+        <textarea class="form-control" id="inp-bio" placeholder="Məs: 15 ildir xalça toxuyuram. Şirvan ornamentlərini sevərək daşıyıram..."></textarea>
+      </div>
+
+      <div class="form-divider"><span id="fdiv1">Mağaza Məlumatları</span></div>
+      <div class="form-section-label">🏪 <span id="fl-store">Mağaza Detalları</span></div>
+
+      <div class="form-group">
+        <label id="lbl-store">Mağaza Adı <span>*</span></label>
+        <input type="text" class="form-control" id="inp-store" placeholder="Məs: Leyla Xalçaları">
+      </div>
+      <div class="form-group">
+        <label id="lbl-desc">Mağaza Açıqlaması</label>
+        <textarea class="form-control" id="inp-desc" placeholder="Mağazanız, sattığınız məhsullar haqqında..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label id="lbl-category">Əsas Kateqoriya <span>*</span></label>
+        <select class="form-control" id="inp-cat">
+          <option value="">— Seçin —</option>
+          <option>Xalçaçılıq</option>
+          <option>Dulusçuluq</option>
+          <option>Zərgərlik</option>
+          <option>Tikmə</option>
+          <option>Ağac Oyması</option>
+          <option>Şüşəbəndlik</option>
+          <option>Rəssamlıq</option>
+          <option>Digər</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label id="lbl-logo">Mağaza Logosu</label>
+        <div class="upload-box" onclick="showToast('📁 Fayl seçici tezliklə əlavə olunacaq', 'info')">
+          <span class="upload-icon">📸</span>
+          <p class="upload-text"><strong>Şəkil yükləyin</strong> və ya bura sürükləyin<br><small>PNG, JPG — maks. 5MB</small></p>
+        </div>
+      </div>
+
+      <div class="form-divider"><span id="fdiv2">Hesab Məlumatları</span></div>
+      <div class="form-section-label">🔐 <span id="fl-account">Giriş Məlumatları</span></div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label id="lbl-pass">Şifrə <span>*</span></label>
+          <input type="password" class="form-control" id="inp-pass" placeholder="Min. 8 simvol">
+        </div>
+        <div class="form-group">
+          <label id="lbl-pass2">Şifrənin Təkrarı <span>*</span></label>
+          <input type="password" class="form-control" id="inp-pass2" placeholder="Şifrəni təkrarlayın">
+        </div>
+      </div>
+
+      <div class="terms-check">
+        <input type="checkbox" id="terms">
+        <label for="terms" id="lbl-terms">
+          <a href="#">İstifadəçi Şərtlərini</a> və <a href="#">Gizlilik Siyasətini</a> oxudum, qəbul edirəm.
+        </label>
+      </div>
+
+      <button class="btn-submit" onclick="submitForm()" id="btn-submit">
+        ✨ Mağazamı Açmağa Müraciət Et
+      </button>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="max-container">
+      <div class="section-header">
+        <div class="section-tag">FAQ</div>
+        <h2 class="section-title" id="faq-title">Tez-tez Soruşulan Suallar</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span id="fq1">Qeydiyyat pulsuzdur?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a" id="fa1">Bəli, qeydiyyat tamamilə pulsuzdur. Yalnız uğurlu satışlardan kiçik komisyon tutulur.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span id="fq2">Nə qədər komisyon tutulur?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a" id="fa2">Hər satışdan yalnız 5% komisyon tutulur. Bu platforma xərclərini ödəmək üçündür.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span id="fq3">Hesabım nə qədər ərzində təsdiqlənir?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a" id="fa3">Müraciətin ən gec 24 saat ərzində baxılır. Nəticə e-mail ünvanınıza göndərilir.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span id="fq4">Ödənişlər necə alınır?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a" id="fa4">Satışlar birbaşa bank hesabınıza köçürülür. Ödənişlər hər həftə işlənir.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span id="fq5">Neçə məhsul satabilərəm?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a" id="fa5">Məhsul sayında heç bir limit yoxdur. İstədiyiniz qədər məhsul əlavə edə bilərsiniz.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (copy) -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="nav-logo" href="#" onclick="showPage('home')">
+          <div class="logo-icon"><img src="senetbazari.png" alt="SənətBazarı Logo"></div> 
+        </a>
+        <p>Azərbaycan ustalarının əl işi sənət əsərlərini bir platformada birləşdiririk.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Marketplace</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('home')">Ana Səhifə</a></li>
+          <li><a href="#">Məhsullar</a></li>
+          <li><a href="#">Ustalar</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Satıcılar</h4>
+        <ul>
+          <li><a href="#">Satıcı Bələdçisi</a></li>
+          <li><a href="#">Komissiyalar</a></li>
+          <li><a href="#">Uğur Hekayələri</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Yardım</h4>
+        <ul>
+          <li><a href="#">Haqqımızda</a></li>
+          <li><a href="#">Əlaqə</a></li>
+          <li><a href="#">Şərtlər</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 SənətBazarı. Bütün hüquqlar qorunur.</span>
+      <span>🇦🇿 Bakı, Azərbaycan</span>
+    </div>
+  </footer>
+
+</div>
+<!-- END OPEN STORE PAGE -->
+
+
+<script>
+// ── LANGUAGE DATA ──
+const translations = {
+  az: {
+    'hero-badge-text': 'Azərbaycan Əl İşi',
+    'hero-title-html': 'Əl işi sənətin<br>ən <em>gözəl</em><br><span class="gold">nümunələri</span>',
+    'hero-subtitle': 'Azərbaycan ustalarının əl ilə hazırladığı unikal sənət əsərlərini kəşf edin. Xalçadan zərgərliyə, dulusçuluqdan tikməyə — hər parçanın öz hekayəsi var.',
+    'hero-btn1': '🛍️ Bazara Bax',
+    'hero-btn2': '✨ Mağaza Aç',
+    'stat1': 'Usta',
+    'stat2': 'Məhsul',
+    'stat3': 'Şəhər',
+    'cat-tag': 'Kateqoriyalar',
+    'cat-title': 'Sənətin Hər Növü',
+    'cat-sub': 'Azərbaycanın zəngin sənət ənənələrindən ilham alan kateqoriyaları kəşf edin',
+    'c1':'Xalçaçılıq','c2':'Dulusçuluq','c3':'Zərgərlik','c4':'Tikmə',
+    'c5':'Ağac Oyması','c6':'Şüşəbəndlik','c7':'Rəssamlıq','c8':'Digər',
+    'prod-tag': 'Seçilmiş Məhsullar',
+    'prod-title': 'Ustaların Şah Əsərləri',
+    'prod-sub': 'Azərbaycanın ən istedadlı sənətkarların əl ilə hazırlanmış unikal parçalar',
+    'cta-tag': 'Ustalar Üçün',
+    'cta-title': 'Sənətini <span class="gold">Dünyaya</span> Sat',
+    'cta-text': 'SənətBazarında öz mağazanı aç, məhsullarını əlavə et və bütün Azərbaycana sat. Qeydiyyat pulsuzdur.',
+    'cta-btn': '🏪 Mağaza Aç — Pulsuz',
+    'perk1':'Dəqiqələr içində mağaza aç','perk2':'Məhsullarını asanlıqla idarə et',
+    'perk3':'Güvənli ödəniş sistemi','perk4':'Satış statistikasına bax','perk5':'Alıcılarla birbaşa əlaqə',
+    't1':'100% Əl İşi','t1t':'Bütün məhsullar Azərbaycan sənətkarların öz əlləri ilə hazırlanmışdır',
+    't2':'Güvənli Alış','t2t':'Hər alış tam təhlükəsizdir. Razı qalmasan — pulunu geri al',
+    't3':'Yerli Sənətkarlara Dəstək','t3t':'Alışın Azərbaycan ənənəvi sənətinin qorunmasına birbaşa kömək edir',
+    'footer-desc':'Azərbaycan sənətkarların əl işi sənət əsərlərini bir platformada birləşdiririk.',
+    'fl1':'Marketplace','fl2':'Satıcılar','fl3':'Yardım',
+    'footer-copy':'© 2024 SənətBazarı. Bütün hüquqlar qorunur.',
+    'navCta': 'Mağaza Aç',
+    // Open Store page
+    'sh-tag':'Sənətkarlar Üçün',
+    'sh-title':'Öz <span class="gold">Sənət Mağazanı</span> Aç',
+    'sh-sub':'Azərbaycanın ən böyük əl işi bazarında mağazanı aç. Qeydiyyat pulsuzdur, komissiya aşağıdır.',
+    'steps-tag':'Necə İşləyir','steps-title':'3 Addımda Satışa Başla',
+    's1t':'Qeydiyyatdan Keç','s1d':'Adın, şəhərin və sənətin haqqında məlumat ver. Təsdiq 24 saat ərzində gəlir.',
+    's2t':'Mağazanı Qur','s2d':'Mağaza adını, logonu və açıqlamanı əlavə et. Birkaç dəqiqəyə hazırdır.',
+    's3t':'Satmağa Başla','s3d':'Məhsullarını yüklə, qiymət qoy və qazanmağa başla. Ödənişlər birbaşa sənə gəlir.',
+    'form-title':'Satıcı Qeydiyyatı',
+    'form-sub':'Bütün sahələri doldurun. Sorğunuz 24 saat ərzində baxılacaq.',
+    'fl-personal':'Şəxsi Məlumatlar','fl-store':'Mağaza Detalları','fl-account':'Giriş Məlumatları',
+    'lbl-name':'Ad Soyad','lbl-email':'E-mail','lbl-phone':'Telefon','lbl-city':'Şəhər',
+    'lbl-bio':'Sənətiniz haqqında qısa məlumat',
+    'lbl-store':'Mağaza Adı','lbl-desc':'Mağaza Açıqlaması','lbl-category':'Əsas Kateqoriya',
+    'lbl-logo':'Mağaza Logosu','lbl-pass':'Şifrə','lbl-pass2':'Şifrənin Təkrarı',
+    'lbl-terms':'<a href="#">İstifadəçi Şərtlərini</a> və <a href="#">Gizlilik Siyasətini</a> oxudum, qəbul edirəm.',
+    'fdiv1':'Mağaza Məlumatları','fdiv2':'Hesab Məlumatları',
+    'btn-submit':'✨ Mağazamı Açmağa Müraciət Et',
+    'faq-title':'Tez-tez Soruşulan Suallar',
+    'fq1':'Qeydiyyat pulsuzdur?','fa1':'Bəli, qeydiyyat tamamilə pulsuzdur. Yalnız uğurlu satışlardan kiçik komisyon tutulur.',
+    'fq2':'Nə qədər komisyon tutulur?','fa2':'Hər satışdan yalnız 5% komisyon tutulur.',
+    'fq3':'Hesabım nə qədər ərzində təsdiqlənir?','fa3':'Müraciətin ən gec 24 saat ərzində baxılır.',
+    'fq4':'Ödənişlər necə alınır?','fa4':'Satışlar birbaşa bank hesabınıza köçürülür.',
+    'fq5':'Neçə məhsul satabilərəm?','fa5':'Məhsul sayında heç bir limit yoxdur.',
+  },
+  ru: {
+    'hero-badge-text': 'Азербайджанское Ручное Искусство',
+    'hero-title-html': 'Лучшие образцы<br><em>ручного</em><br><span class="gold">искусства</span>',
+    'hero-subtitle': 'Откройте для себя уникальные произведения искусства, созданные руками азербайджанских мастеров. От ковров до ювелирных украшений — каждое изделие имеет свою историю.',
+    'hero-btn1': '🛍️ Смотреть базар',
+    'hero-btn2': '✨ Открыть магазин',
+    'stat1': 'Мастеров',
+    'stat2': 'Товаров',
+    'stat3': 'Городов',
+    'cat-tag': 'Категории',
+    'cat-title': 'Все Виды Искусства',
+    'cat-sub': 'Исследуйте категории, вдохновлённые богатыми художественными традициями Азербайджана',
+    'c1':'Ковроткачество','c2':'Гончарство','c3':'Ювелирное дело','c4':'Вышивка',
+    'c5':'Резьба по дереву','c6':'Стеклоделие','c7':'Живопись','c8':'Другое',
+    'prod-tag': 'Избранные товары',
+    'prod-title': 'Шедевры Мастеров',
+    'prod-sub': 'Уникальные изделия ручной работы от самых талантливых мастеров Азербайджана',
+    'cta-tag': 'Для Мастеров',
+    'cta-title': 'Продавай своё <span class="gold">Искусство</span>',
+    'cta-text': 'Открой свой магазин на SənətBazarı, добавляй товары и продавай по всему Азербайджану. Регистрация бесплатна.',
+    'cta-btn': '🏪 Открыть магазин — Бесплатно',
+    'perk1':'Открой магазин за несколько минут','perk2':'Управляй товарами легко',
+    'perk3':'Безопасная система оплаты','perk4':'Просматривай статистику продаж','perk5':'Прямая связь с покупателями',
+    't1':'100% Ручная работа','t1t':'Все товары изготовлены руками азербайджанских мастеров',
+    't2':'Безопасная покупка','t2t':'Каждая покупка полностью безопасна. Не доволен — вернём деньги',
+    't3':'Поддержка местных мастеров','t3t':'Ваша покупка напрямую помогает сохранению традиционного искусства',
+    'footer-desc':'Объединяем произведения ручного искусства азербайджанских мастеров на одной платформе.',
+    'fl1':'Marketplace','fl2':'Продавцам','fl3':'Помощь',
+    'footer-copy':'© 2024 SənətBazarı. Все права защищены.',
+    'navCta': 'Открыть магазин',
+    // Open Store
+    'sh-tag':'Для Мастеров',
+    'sh-title':'Открой свой <span class="gold">Магазин Искусства</span>',
+    'sh-sub':'Открой магазин на крупнейшем рынке ручного искусства Азербайджана. Регистрация бесплатна.',
+    'steps-tag':'Как это работает','steps-title':'Начни продавать за 3 шага',
+    's1t':'Зарегистрируйся','s1d':'Расскажи о себе, своём городе и своём искусстве. Подтверждение в течение 24 часов.',
+    's2t':'Создай магазин','s2d':'Добавь название, логотип и описание магазина. Готово за несколько минут.',
+    's3t':'Начни продавать','s3d':'Загружай товары, устанавливай цены и начинай зарабатывать.',
+    'form-title':'Регистрация Продавца',
+    'form-sub':'Заполните все поля. Заявка будет рассмотрена в течение 24 часов.',
+    'fl-personal':'Личные данные','fl-store':'Данные магазина','fl-account':'Данные аккаунта',
+    'lbl-name':'Имя и Фамилия','lbl-email':'E-mail','lbl-phone':'Телефон','lbl-city':'Город',
+    'lbl-bio':'Краткая информация о вашем искусстве',
+    'lbl-store':'Название магазина','lbl-desc':'Описание магазина','lbl-category':'Основная категория',
+    'lbl-logo':'Логотип магазина','lbl-pass':'Пароль','lbl-pass2':'Подтверждение пароля',
+    'lbl-terms':'Я прочитал(а) и принимаю <a href="#">Условия использования</a> и <a href="#">Политику конфиденциальности</a>.',
+    'fdiv1':'Данные магазина','fdiv2':'Данные аккаунта',
+    'btn-submit':'✨ Подать заявку на открытие магазина',
+    'faq-title':'Часто задаваемые вопросы',
+    'fq1':'Регистрация бесплатна?','fa1':'Да, регистрация абсолютно бесплатна. Небольшая комиссия взимается только с успешных продаж.',
+    'fq2':'Какой размер комиссии?','fa2':'Комиссия составляет всего 5% с каждой продажи.',
+    'fq3':'Как долго рассматривается заявка?','fa3':'Заявка рассматривается в течение 24 часов. Результат придёт на email.',
+    'fq4':'Как получить оплату?','fa4':'Продажи переводятся прямо на ваш банковский счёт еженедельно.',
+    'fq5':'Сколько товаров можно продавать?','fa5':'Количество товаров не ограничено.',
+  }
+};
+
+let currentLang = 'az';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('langAz').classList.toggle('active', lang === 'az');
+  document.getElementById('langRu').classList.toggle('active', lang === 'ru');
+  const t = translations[lang];
+  for (const [id, val] of Object.entries(t)) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (id === 'hero-title' || id.endsWith('-html') || id === 'cta-title' || id === 'sh-title' || id.startsWith('lbl-terms')) {
+      el.innerHTML = val;
+    } else {
+      el.textContent = val;
+    }
+  }
+  // Update product text
+  renderProducts();
+}
+
+// ── PRODUCTS DATA ──
+const products = [
+  { emoji:'🪡', titleAz:'Şirvan Naxışlı Xalça', titleRu:'Ширванский ковёр с орнаментом', price:240, cat:'Xalçaçılıq', seller:'Aynur Xanım', rating:5, reviews:28, badge:'Bestseller', colors:['#8B1A1A','#C9962A'] },
+  { emoji:'🏺', titleAz:'Gəncə Gil Qabı', titleRu:'Гянджинская глиняная посуда', price:85, cat:'Dulusçuluq', seller:'Rauf Usta', rating:4, reviews:14, badge:null, colors:['#8B5E3C','#C9762A'] },
+  { emoji:'💎', titleAz:'Buta Gümüş Qolbaq', titleRu:'Серебряный браслет Бута', price:120, cat:'Zərgərlik', seller:'Günel Zər', rating:5, reviews:42, badge:'Yeni', colors:['#2C3E50','#7F8C8D'] },
+  { emoji:'🎨', titleAz:'Bakı Limanı Rəsmi', titleRu:'Картина Бакинской бухты', price:380, cat:'Rəssamlıq', seller:'Elnur Rəssam', rating:5, reviews:19, badge:null, colors:['#1A3A6B','#2E6BB0'] },
+  { emoji:'🧵', titleAz:'Şəki İpək Əlcəklər', titleRu:'Шёлковые перчатки из Шеки', price:65, cat:'Tikmə', seller:'Səmra xanım', rating:4, reviews:8, badge:null, colors:['#6B2D8B','#9B59B6'] },
+  { emoji:'🪵', titleAz:'Oyma Taxta Panel', titleRu:'Резная деревянная панель', price:195, cat:'Ağac Oyması', seller:'Tofiq Usta', rating:5, reviews:11, badge:null, colors:['#5D4037','#8D6E63'] },
+  { emoji:'🫙', titleAz:'Şüşə Əl İşi Vazo', titleRu:'Стеклянная ваза ручной работы', price:110, cat:'Şüşəbəndlik', seller:'Kamran Sənətkar', rating:4, reviews:6, badge:'Yeni', colors:['#1B5E20','#4CAF50'] },
+  { emoji:'🪡', titleAz:'Qarabağ Kilimi', titleRu:'Карабахский килим', price:310, cat:'Xalçaçılıq', seller:'Mətanət Ana', rating:5, reviews:35, badge:'Məhdud', colors:['#B71C1C','#C9962A'] },
+];
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return;
+  const t = translations[currentLang];
+  grid.innerHTML = products.map((p,i) => `
+    <div class="product-card" style="animation: fadeUp 0.5s ${i*0.07}s ease both">
+      <div class="product-img" style="background: linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})">
+        <span style="font-size:4rem">${p.emoji}</span>
+        ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+        <button class="wishlist-btn" onclick="toggleWishlist(this, event)">🤍</button>
+      </div>
+      <div class="product-info">
+        <div class="product-category">${p.cat}</div>
+        <div class="product-title">${currentLang === 'az' ? p.titleAz : p.titleRu}</div>
+        <div class="product-seller">${currentLang === 'az' ? 'Usta' : 'Мастер'}: <span>${p.seller}</span></div>
+        <div class="product-stars">${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)} <em>(${p.reviews})</em></div>
+        <div class="product-footer">
+          <div class="product-price">₼${p.price}</div>
+          <button class="btn-cart" onclick="addToCart('${currentLang === 'az' ? p.titleAz : p.titleRu}', event)">
+            ${currentLang === 'az' ? '+ Səbət' : '+ Корзина'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── NAVIGATION ──
+function showPage(page) {
+  document.getElementById('page-home').classList.toggle('active', page === 'home');
+  document.getElementById('page-openstore').classList.toggle('active', page === 'openstore');
+  document.getElementById('page-waitlist').classList.toggle('active', page === 'waitlist'); // ← add this
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (page === 'home') renderProducts();
+}
+
+function scrollToSection(id) {
+  showPage('home');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+// ── SCROLL EFFECTS ──
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+  // animate on scroll
+  document.querySelectorAll('.animate').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 80) {
+      el.classList.add('visible');
+    }
+  });
+});
+
+// ── MOBILE MENU ──
+function toggleMenu() {
+  const links = document.getElementById('navLinks');
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.flexDirection = 'column';
+  links.style.position = 'fixed';
+  links.style.top = '70px';
+  links.style.left = '0'; links.style.right = '0';
+  links.style.background = 'var(--cream)';
+  links.style.padding = '20px';
+  links.style.borderBottom = '1px solid var(--border)';
+  links.style.zIndex = '99';
+}
+
+// ── WISHLIST ──
+function toggleWishlist(btn, e) {
+  e.stopPropagation();
+  const isActive = btn.textContent === '❤️';
+  btn.textContent = isActive ? '🤍' : '❤️';
+  showToast(isActive
+    ? (currentLang === 'az' ? '💔 Sevimlilərdən silindi' : '💔 Удалено из избранного')
+    : (currentLang === 'az' ? '❤️ Sevimlilərə əlavə edildi' : '❤️ Добавлено в избранное'),
+    isActive ? 'info' : 'success');
+}
+
+// ── ADD TO CART ──
+function addToCart(title, e) {
+  e.stopPropagation();
+  showToast(`🛍️ ${title} ${currentLang === 'az' ? 'səbətə əlavə edildi' : 'добавлен в корзину'}`, 'success');
+}
+
+// ── CATEGORY FILTER ──
+function filterCategory(cat) {
+  showToast(currentLang === 'az' ? '🔍 Tezliklə tam axtarış funksiyası əlavə olunacaq' : '🔍 Полный поиск будет добавлен скоро', 'info');
+}
+
+// ── FORM SUBMIT ──
+function submitForm() {
+  const name = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const phone = document.getElementById('inp-phone').value.trim();
+  const city = document.getElementById('inp-city').value;
+  const bio = document.getElementById('inp-bio').value.trim();
+  const store = document.getElementById('inp-store').value.trim();
+  const cat = document.getElementById('inp-cat').value;
+  const pass = document.getElementById('inp-pass').value;
+  const pass2 = document.getElementById('inp-pass2').value;
+  const terms = document.getElementById('terms').checked;
+
+  if (!name || !email || !phone || !city || !bio || !store || !cat || !pass) {
+    showToast(currentLang === 'az' ? '⚠️ Zəhmət olmasa bütün sahələri doldurun' : '⚠️ Пожалуйста, заполните все поля', 'error');
+    return;
+  }
+  if (pass !== pass2) {
+    showToast(currentLang === 'az' ? '❌ Şifrələr eyni deyil' : '❌ Пароли не совпадают', 'error');
+    return;
+  }
+  if (!terms) {
+    showToast(currentLang === 'az' ? '📋 Şərtləri qəbul edin' : '📋 Примите условия использования', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit');
+  btn.textContent = currentLang === 'az' ? '⏳ Göndərilir...' : '⏳ Отправка...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    btn.textContent = currentLang === 'az' ? '✅ Müraciətiniz qəbul edildi!' : '✅ Заявка принята!';
+    showToast(currentLang === 'az'
+      ? `🎉 Sağ olun, ${name}! Müraciətiniz qəbul edildi. 24 saat ərzində email alacaqsınız.`
+      : `🎉 Спасибо, ${name}! Ваша заявка принята. В течение 24 часов вы получите email.`,
+      'success');
+    // reset after delay
+    setTimeout(() => {
+      btn.textContent = translations[currentLang]['btn-submit'];
+      btn.disabled = false;
+      document.querySelectorAll('.form-control').forEach(el => el.value = '');
+      document.getElementById('terms').checked = false;
+    }, 4000);
+  }, 2000);
+}
+
+// ── FAQ ──
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// ── TOAST ──
+function showToast(msg, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3200);
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  renderProducts();
+  startCountdown();
+  // Trigger animations for elements in view
+  setTimeout(() => {
+    document.querySelectorAll('.animate').forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        el.classList.add('visible');
+      }
+    });
+  }, 200);
+});
+function startCountdown() {
+  const target = new Date();
+  target.setDate(target.getDate() + 47);
+  target.setHours(target.getHours() + 12);
+  setInterval(() => {
+    const diff = target - new Date();
+    if (diff <= 0) return;
+    const fmt = n => String(n).padStart(2, '0');
+    document.getElementById('cd-days').textContent  = fmt(Math.floor(diff / 86400000));
+    document.getElementById('cd-hours').textContent = fmt(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('cd-mins').textContent  = fmt(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('cd-secs').textContent  = fmt(Math.floor((diff % 60000) / 1000));
+  }, 1000);
+}
+let waitlistCount = 246;
+
+function selectRole(role) {
+  document.getElementById('roleAlici').classList.toggle('active', role === 'alici');
+  document.getElementById('roleSatici').classList.toggle('active', role === 'satici');
+}
+
+function toggleChip(chip) {
+  chip.classList.toggle('selected');
+}
+
+function joinWaitlist() {
+  const name = document.getElementById('wf-name').value.trim();
+  const email = document.getElementById('wf-email').value.trim();
+  if (!name || !email) { showToast('⚠️ Ad və e-mail daxil edin', 'error'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('❌ Düzgün e-mail daxil edin', 'error'); return; }
+  const btn = document.querySelector('.btn-waitlist');
+  btn.textContent = '⏳ Qeyd olunur...';
+  btn.disabled = true;
+  setTimeout(() => {
+    waitlistCount++;
+    document.getElementById('successNum').textContent = waitlistCount;
+    document.getElementById('wfBox').style.display = 'none';
+    document.getElementById('wfSuccess').style.display = 'block';
+    showToast(`🎉 ${name}, siyahıya əlavə oldunuz!`, 'success');
+  }, 1500);
+}
+</script>
+<!-- ═══════════════════ WAITLIST PAGE ═══════════════════ -->
+<div id="page-waitlist" class="page">
+    <div class="waitlist-page">
+  
+      <div class="waitlist-hero">
+        <div class="waitlist-hero-pattern"></div>
+        <div class="waitlist-hero-content">
+          <div class="section-tag" style="background:rgba(201,150,42,0.2);color:#FFD166;border-color:rgba(201,150,42,0.5)">🔔 Tezliklə Açılır</div>
+          <h1 style="margin-top:16px">Azərbaycan Sənətinin<br><span class="gold">Yeni Ünvanına</span> Qoşul</h1>
+          <p>SənətBazarı tezliklə açılır. İlk istifadəçilərdən ol, xüsusi endirimlər qazan və Azərbaycanın ən gözəl əl işlərini hamıdan əvvəl kəşf et.</p>
+        </div>
+      </div>
+  
+      <div class="countdown-section">
+        <div class="countdown-label">🗓️ Açılışa qədər qalan vaxt</div>
+        <div class="countdown-grid">
+          <div class="countdown-item"><span class="countdown-num" id="cd-days">47</span><span class="countdown-unit">Gün</span></div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-item"><span class="countdown-num" id="cd-hours">12</span><span class="countdown-unit">Saat</span></div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-item"><span class="countdown-num" id="cd-mins">38</span><span class="countdown-unit">Dəqiqə</span></div>
+          <span class="countdown-sep">:</span>
+          <div class="countdown-item"><span class="countdown-num" id="cd-secs">05</span><span class="countdown-unit">Saniyə</span></div>
+        </div>
+      </div>
+  
+      <div class="benefits-strip">
+        <div class="benefits-strip-inner">
+          <div class="benefit-pill"><span class="pip">🎁</span> İlk 500 üçün 20% endirim</div>
+          <div class="benefit-pill"><span class="pip">⚡</span> Erkən giriş imkanı</div>
+          <div class="benefit-pill"><span class="pip">🏆</span> Xüsusi "Kurucu" nişanı</div>
+          <div class="benefit-pill"><span class="pip">🔔</span> Açılış bildirişi</div>
+        </div>
+      </div>
+  
+      <div class="waitlist-main">
+        <div class="waitlist-grid">
+  
+          <div class="waitlist-form-box" id="wfBox">
+            <h2 class="wf-title">Siyahıya Yazıl</h2>
+            <p class="wf-sub">Gözləmə siyahısına qoşularaq açılışdan xəbərdar ol və xüsusi üstünlüklər qazan.</p>
+  
+            <div class="role-toggle">
+              <button class="role-btn active" id="roleAlici" onclick="selectRole('alici')">
+                <span class="role-icon">🛍️</span>Alıcı
+              </button>
+              <button class="role-btn" id="roleSatici" onclick="selectRole('satici')">
+                <span class="role-icon">🎨</span>Sənətkar / Satıcı
+              </button>
+            </div>
+  
+            <div class="wf-grid-2">
+              <div class="wf-group"><label>Ad Soyad <span>*</span></label><input type="text" class="wf-input" id="wf-name" placeholder="Leyla Elizade"></div>
+              <div class="wf-group"><label>E-mail <span>*</span></label><input type="email" class="wf-input" id="wf-email" placeholder="sizin@mail.com"></div>
+            </div>
+            <div class="wf-grid-2">
+              <div class="wf-group"><label>Telefon</label><input type="tel" class="wf-input" id="wf-phone" placeholder="+994 50 ..."></div>
+              <div class="wf-group"><label>Şəhər</label>
+                <select class="wf-input" id="wf-city">
+                  <option value="">— Seçin —</option>
+                  <option>Bakı</option><option>Gəncə</option><option>Şəki</option>
+                  <option>Sumqayıt</option><option>Lənkəran</option><option>Naxçıvan</option>
+                  <option>Şamaxı</option><option>Quba</option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="wf-interest">
+              <span class="wf-interest-label">Maraqlandığınız kateqoriyalar</span>
+              <div class="interest-chips">
+                <button class="chip" onclick="toggleChip(this)">🪡 Xalça</button>
+                <button class="chip" onclick="toggleChip(this)">🏺 Dulusçuluq</button>
+                <button class="chip" onclick="toggleChip(this)">💎 Zərgərlik</button>
+                <button class="chip" onclick="toggleChip(this)">🧵 Tikmə</button>
+                <button class="chip" onclick="toggleChip(this)">🎨 Rəssamlıq</button>
+                <button class="chip" onclick="toggleChip(this)">🪵 Ağac</button>
+                <button class="chip" onclick="toggleChip(this)">✨ Hamısı</button>
+              </div>
+            </div>
+  
+            <div class="wf-notice">
+              <span class="ni">🔒</span>
+              <span>Məlumatlarınız təhlükəsizdir. Spam göndərmirik. İstənilən vaxt siyahıdan çıxa bilərsiniz.</span>
+            </div>
+  
+            <button class="btn-waitlist" onclick="joinWaitlist()">🔔 Gözləmə Siyahısına Qoşul</button>
+          </div>
+  
+          <div class="waitlist-success" id="wfSuccess">
+            <div class="success-icon">✅</div>
+            <div class="success-title">Siyahıya əlavə oldunuz!</div>
+            <p class="success-text">Açılış günü birinci öyrənənlərdən olacaqsınız. E-mailinizi yoxlayın.</p>
+            <div class="success-number" id="successNum">247</div>
+            <div class="success-number-label">nəfər sizdən əvvəl qoşulub</div>
+            <br><br>
+            <button class="btn-primary" onclick="showPage('home')">🏠 Ana Səhifəyə Qayıt</button>
+          </div>
+  
+          <div class="waitlist-info animate">
+            <div class="info-card">
+              <div class="info-card-title"><span>👥</span> Artıq qoşulanlar</div>
+              <div class="social-proof" style="margin-bottom:14px">
+                <div class="avatar-stack">
+                  <div class="avatar avatar-1">🎨</div>
+                  <div class="avatar avatar-2">🪡</div>
+                  <div class="avatar avatar-3">💎</div>
+                  <div class="avatar avatar-4">🏺</div>
+                </div>
+                <div class="social-text"><strong>246+ nəfər</strong> artıq siyahıdadır</div>
+              </div>
+              <div class="perks-list">
+                <div class="perk-item"><div class="perk-check">✓</div>Bakıdan 98 sənətkar</div>
+                <div class="perk-item"><div class="perk-check">✓</div>Gəncədən 47 usta</div>
+                <div class="perk-item"><div class="perk-check">✓</div>Şəkidən 31 toxucu</div>
+                <div class="perk-item"><div class="perk-check">✓</div>Digər şəhərlərdən 70+ nəfər</div>
+              </div>
+            </div>
+  
+            <div class="info-card">
+              <div class="info-card-title"><span>🗺️</span> Yol xəritəsi</div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot done">✓</div>
+                  <div class="timeline-content"><div class="timeline-title">Platform hazırlanır</div><div class="timeline-date">Yanvar 2025 — Tamamlandı</div></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot done">✓</div>
+                  <div class="timeline-content"><div class="timeline-title">Beta istifadəçi cəlbi</div><div class="timeline-date">Fevral 2025 — Tamamlandı</div></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot active">▶</div>
+                  <div class="timeline-content"><div class="timeline-title">Gözləmə siyahısı</div><div class="timeline-date">İndi — Davam edir</div></div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot pending"></div>
+                  <div class="timeline-content"><div class="timeline-title">Rəsmi açılış 🎉</div><div class="timeline-date">Aprel 2025 — Tezliklə</div></div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="info-card">
+              <div class="info-card-title"><span>🎁</span> Erkən qoşulma üstünlükləri</div>
+              <div class="perks-list">
+                <div class="perk-item"><div class="perk-check">✓</div>İlk sifarişdə 20% endirim kuponu</div>
+                <div class="perk-item"><div class="perk-check">✓</div>Platforma açılışından əvvəl giriş</div>
+                <div class="perk-item"><div class="perk-check">✓</div>Profildə xüsusi "İlk İstifadəçi" nişanı</div>
+                <div class="perk-item"><div class="perk-check">✓</div>Satıcılar üçün ilk 3 ay komissiyasız</div>
+                <div class="perk-item"><div class="perk-check">✓</div>Açılış tədbir dəvətnaməsi</div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+  
+    </div>
+  </div>
+</body>
+</html>
