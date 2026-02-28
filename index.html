@@ -1252,10 +1252,7 @@
         <div class="cs-colon">:</div>
         <div class="cs-tu"><div class="cs-tnum" id="cs-secs">00</div><div class="cs-tlbl">Saniyə</div></div>
       </div>
-      <div class="cs-form">
-        <input class="cs-input" id="cs-email" type="email" placeholder="E-mail adresinizi daxil edin...">
-        <button class="cs-submit" onclick="csNotify()">Xəbər Al</button>
-      </div>
+      
       <div class="cs-pills">
         <div class="cs-pill"><span class="cs-pill-dot"></span>Pulsuz Qeydiyyat</div>
         <div class="cs-pill"><span class="cs-pill-dot"></span>Yalnız 5% Komisyon</div>
@@ -1527,13 +1524,9 @@ function addToCart(title,e){
   showToast(`🛍️ ${title} ${currentLang==='az'?'səbətə əlavə edildi':'добавлен в корзину'}`,'success');
 }
 function filterCategory(){showToast('🔍 Tezliklə tam axtarış funksiyası əlavə olunacaq','info');}
-function csNotify(){
-  const input=document.getElementById('cs-email');
-  const val=input.value.trim();
-  if(!val||!val.includes('@')){showToast('⚠️ Düzgün e-mail daxil edin','error');return;}
-  showToast('🎉 Qeydə alındınız! Açılışda ilk siz xəbər alacaqsınız.','success');
-  input.value='';
-}
+
+
+
 function updateCountdown(){
   const target=new Date('2026-04-01T00:00:00');
   const diff=target-new Date();
